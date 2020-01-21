@@ -1,26 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
+import { myMSALObj } from './config'
+class App extends Component{
+  
+  signOut(){
+    myMSALObj.logout();
+  }
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  signIn(){
+
+    var requestObj = {
+      scopes: ["user.read"]
+    };
+
+    myMSALObj.loginPopup(requestObj).then(function (tokenResponse) {
+      console.log(tokenResponse.accessToken);
+    }).catch(function (error) {
+        console.log(error);
+    });
+
+  }
+
+  render(){
+    return (
+      <div>
+        <button onClick={() => this.signIn()}>Sign In</button>
+        <button onClick={() => this.signOut()}>Sign Out</button>
+      </div>
+    );
+  }
 }
 
 export default App;
